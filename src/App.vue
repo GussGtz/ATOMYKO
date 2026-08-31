@@ -7,6 +7,7 @@ import Lenis from 'lenis'
 import { appReady } from './composables/appReady'
 import { fixScrollTriggerPositions } from './composables/scrollFix'
 import brandIcon from './assets/atomyko-icon-color.png'
+import brandIconOnDark from './assets/atomyko-icon-color-onDark.png'
 
 gsap.registerPlugin(ScrollTrigger)
 
@@ -170,9 +171,9 @@ onBeforeUnmount(() => {
 
     <div v-if="loading" class="preloader">
       <div class="preloader-logo">
-        <img :src="brandIcon" alt="" class="preloader-logo-base" />
+        <img :src="brandIconOnDark" alt="" class="preloader-logo-base" />
         <div class="preloader-logo-fill" :style="{ height: loadCount + '%' }">
-          <img :src="brandIcon" alt="" class="preloader-logo-fill-img" />
+          <img :src="brandIconOnDark" alt="" class="preloader-logo-fill-img" />
         </div>
       </div>
       <div class="preloader-label">ATOMYKO</div>
@@ -283,7 +284,7 @@ onBeforeUnmount(() => {
       <div class="footer-top">
         <div class="footer-brand">
           <router-link to="/" class="brand">
-            <img :src="brandIcon" alt="" class="brand-icon" />
+            <img :src="brandIconOnDark" alt="" class="brand-icon" />
             <span class="brand-word">atomyk<span class="brand-accent">o</span></span>
           </router-link>
           <p>Software y marketing digital para empresas que quieren marcar el ritmo, no seguirlo.</p>
