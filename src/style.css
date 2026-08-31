@@ -208,35 +208,51 @@ img { max-width: 100%; display: block; }
   justify-content: center;
   gap: 18px;
 }
-.preloader-icon {
-  width: clamp(52px, 8vw, 76px);
+/* Logo "fills up" like liquid rising in a glass: a dim, near-invisible
+   copy of the mark sits underneath; a second, fully-opaque copy of
+   the exact same image is clipped inside a bottom-anchored container
+   whose height tracks load progress, so it's revealed from the
+   bottom up instead of fading or scaling. */
+.preloader-logo {
+  position: relative;
+  width: clamp(64px, 10vw, 104px);
+}
+.preloader-logo-base {
+  display: block;
+  width: 100%;
   height: auto;
-  filter: invert(1);
-  animation: preloader-pulse 1.7s ease-in-out infinite;
+  opacity: .16;
 }
-@keyframes preloader-pulse {
-  0%, 100% { transform: scale(1); opacity: .8; }
-  50% { transform: scale(1.1); opacity: 1; }
+.preloader-logo-fill {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  overflow: hidden;
+  transition: height .15s linear;
 }
-.preloader-count {
-  font-size: clamp(3rem, 9vw, 6rem);
-  font-weight: 700;
-  letter-spacing: -.04em;
-  font-variant-numeric: tabular-nums;
+.preloader-logo-fill::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, #00cbfe, #0a51fd);
+  box-shadow: 0 0 12px rgba(10, 81, 253, .8);
+}
+.preloader-logo-fill-img {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: clamp(64px, 10vw, 104px);
+  height: auto;
 }
 .preloader-label {
   font-size: .72rem;
   font-weight: 600;
   letter-spacing: .22em;
   color: rgba(255, 255, 255, .45);
-}
-.preloader-bar {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  height: 2px;
-  background: var(--white);
-  width: 0%;
 }
 
 /* =========================
@@ -274,10 +290,7 @@ img { max-width: 100%; display: block; }
   text-transform: uppercase;
 }
 .brand-icon { width: 26px; height: 26px; object-fit: contain; }
-/* The mark is pure black ink — invert it to white on the dark
-   contexts (footer, fullscreen menu) it also appears in. */
-footer .brand-icon,
-.menu-overlay .brand-icon { filter: invert(1); }
+.brand-accent { color: #0a51fd; }
 
 .desktop-nav { display: flex; align-items: center; gap: 40px; }
 .nav-links { display: flex; align-items: center; gap: 36px; font-size: .85rem; font-weight: 500; }

@@ -6,7 +6,7 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import Lenis from 'lenis'
 import { appReady } from './composables/appReady'
 import { fixScrollTriggerPositions } from './composables/scrollFix'
-import brandIcon from './assets/atomyko-icon.png'
+import brandIcon from './assets/atomyko-icon-color.png'
 
 gsap.registerPlugin(ScrollTrigger)
 
@@ -149,7 +149,7 @@ onMounted(async () => {
       appReady.value = true
     }
   })
-  loadTl.to({}, { duration: 1.05 })
+  loadTl.to({}, { duration: 1.9 })
 
   await nextTick()
 })
@@ -169,10 +169,13 @@ onBeforeUnmount(() => {
     ========================== -->
 
     <div v-if="loading" class="preloader">
-      <img :src="brandIcon" alt="" class="preloader-icon" />
-      <div class="preloader-count">{{ loadCount }}</div>
+      <div class="preloader-logo">
+        <img :src="brandIcon" alt="" class="preloader-logo-base" />
+        <div class="preloader-logo-fill" :style="{ height: loadCount + '%' }">
+          <img :src="brandIcon" alt="" class="preloader-logo-fill-img" />
+        </div>
+      </div>
       <div class="preloader-label">ATOMYKO</div>
-      <div class="preloader-bar" :style="{ width: loadCount + '%' }"></div>
     </div>
 
     <!-- =========================
@@ -195,7 +198,7 @@ onBeforeUnmount(() => {
     <header class="navbar" :class="{ compact: scrolled }">
       <router-link to="/" class="brand">
         <img :src="brandIcon" alt="" class="brand-icon" />
-        atomyko
+        <span class="brand-word">atomyk<span class="brand-accent">o</span></span>
       </router-link>
 
       <div class="desktop-nav">
@@ -281,7 +284,7 @@ onBeforeUnmount(() => {
         <div class="footer-brand">
           <router-link to="/" class="brand">
             <img :src="brandIcon" alt="" class="brand-icon" />
-            atomyko
+            <span class="brand-word">atomyk<span class="brand-accent">o</span></span>
           </router-link>
           <p>Software y marketing digital para empresas que quieren marcar el ritmo, no seguirlo.</p>
         </div>
