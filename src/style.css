@@ -977,8 +977,7 @@ img { max-width: 100%; display: block; }
 }
 .why-card:nth-child(4),
 .why-card:nth-child(5) { grid-column: span 3; min-height: 220px; }
-.why-card.-mint { background: #e6f3ef; }
-.why-card.-lavender { background: #edeffb; }
+.why-card { background: var(--paper); box-shadow: 0 20px 40px rgba(10, 10, 11, .05); }
 .why-card-icon svg { width: 26px; height: 26px; stroke: var(--gray-900); stroke-width: 1.6; fill: none; }
 .why-card-text { margin: 0; max-width: 320px; color: var(--gray-900); font-size: 1.05rem; line-height: 1.5; letter-spacing: -.01em; }
 
