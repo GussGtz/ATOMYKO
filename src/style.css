@@ -941,6 +941,48 @@ img { max-width: 100%; display: block; }
 .testimonial-logo { display: block; max-height: 32px; max-width: 140px; object-fit: contain; object-position: left center; }
 
 /* =========================
+   WHY ATOMYKO — BENTO GRID
+========================= */
+
+.why-head {
+  display: grid;
+  grid-template-columns: .3fr 1fr;
+  gap: 60px;
+  padding-top: 40px;
+  margin-bottom: 50px;
+  border-top: 1px solid var(--line-soft);
+}
+.why-head p {
+  max-width: 640px;
+  margin: 0;
+  color: var(--gray-700);
+  font-size: clamp(1.1rem, 1.7vw, 1.4rem);
+  line-height: 1.55;
+  letter-spacing: -.01em;
+}
+.why-grid {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 20px;
+}
+.why-card {
+  grid-column: span 2;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 46px;
+  min-height: 260px;
+  padding: 32px;
+  border-radius: var(--r-lg);
+}
+.why-card:nth-child(4),
+.why-card:nth-child(5) { grid-column: span 3; min-height: 220px; }
+.why-card.-mint { background: #e6f3ef; }
+.why-card.-lavender { background: #edeffb; }
+.why-card-icon svg { width: 26px; height: 26px; stroke: var(--gray-900); stroke-width: 1.6; fill: none; }
+.why-card-text { margin: 0; max-width: 320px; color: var(--gray-900); font-size: 1.05rem; line-height: 1.5; letter-spacing: -.01em; }
+
+/* =========================
    STACK MARQUEE
 ========================= */
 
@@ -1306,6 +1348,7 @@ footer {
   .benefit-row { grid-template-columns: 46px 1fr; }
   .benefit-row-desc { grid-column: 1 / -1; max-width: 100%; }
   .logo-cloud { grid-template-columns: repeat(3, 1fr) !important; row-gap: 70px; }
+  .why-head { grid-template-columns: 1fr; gap: 20px; }
   .side-nav { display: none; }
 }
 
@@ -1329,6 +1372,10 @@ footer {
   .testimonial-card:nth-child(4),
   .testimonial-card:nth-child(5) { grid-column: span 1; }
   .testimonial-card p { min-height: 0; }
+  .why-grid { grid-template-columns: 1fr; gap: 16px; }
+  .why-card,
+  .why-card:nth-child(4),
+  .why-card:nth-child(5) { grid-column: span 1; min-height: 0; }
   .contact { padding: 110px 20px; }
   .contact-form { padding: 26px; margin-top: 40px; }
   .contact-fields { grid-template-columns: 1fr; }

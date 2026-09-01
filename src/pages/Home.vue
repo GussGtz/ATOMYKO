@@ -103,6 +103,25 @@ const testimonials = [
 const visibleLogoCloud = computed(() => logoCloud.filter((l) => !l.hidden))
 const visibleTestimonials = computed(() => testimonials.filter((t) => !t.hidden))
 
+const whyIconPaths = {
+  star: 'M32 8 L38.2 24.8 L56 26 L42.4 37.2 L46.8 54.4 L32 44.6 L17.2 54.4 L21.6 37.2 L8 26 L25.8 24.8 Z',
+  grid: 'M10 10h18v18h-18z M36 10h18v18h-18z M10 36h18v18h-18z M36 36h18v18h-18z',
+  heart: 'M32 54C32 54 10 40 10 24C10 15 17 9 25 9C28.5 9 31 11 32 14C33 11 35.5 9 39 9C47 9 54 15 54 24C54 40 32 54 32 54Z',
+  layers: 'M32 8 L58 22 L32 36 L6 22 Z M6 34 L32 48 L58 34 M6 46 L32 60 L58 46',
+  bars: 'M14 46h10v-14h-10z M27 46h10v-24h-10z M40 46h10v-34h-10z'
+}
+
+// Honest, non-numeric claims only — no invented years-of-experience or
+// project counts for a brand this new. Real facts or qualitative
+// statements, never fabricated stats.
+const whyCards = [
+  { tint: 'mint', icon: 'star', text: 'Atención personalizada en cada proyecto, sin perdernos entre cuentas grandes.' },
+  { tint: 'lavender', icon: 'grid', text: 'Clientes de distintos giros — deporte, contabilidad, transporte, tecnología — ya confían en nosotros.' },
+  { tint: 'mint', icon: 'heart', text: 'Construimos relaciones de largo plazo, no proyectos de una sola vez.' },
+  { tint: 'lavender', icon: 'layers', text: 'Estrategia, diseño y desarrollo bajo un mismo equipo, sin intermediarios.' },
+  { tint: 'lavender', icon: 'bars', text: 'Medimos el éxito en resultados reales para tu negocio, no solo en entregables bonitos.' }
+]
+
 // 0 = scattered/overlapping like a dropped hand of cards, 1 = settled
 // into the grid — driven continuously by scroll position as the
 // section enters view, never a one-shot trigger.
@@ -366,6 +385,35 @@ function runHeroIntro() {
           <div class="testimonial-divider"></div>
           <img :src="t.logo" :alt="t.name" class="testimonial-logo" />
         </article>
+      </div>
+    </section>
+
+    <!-- =========================
+         POR QUÉ ATOMYKO
+    ========================== -->
+
+    <section class="section why-section">
+      <div class="why-head">
+        <div class="eyebrow reveal-up">POR QUÉ ATOMYKO</div>
+        <p class="reveal-up">
+          No somos una agencia más entre muchas. Trabajamos con pocos clientes a la vez
+          para poder dedicarle a cada proyecto la atención que merece, desde la estrategia
+          hasta el código que lo sostiene.
+        </p>
+      </div>
+
+      <div class="why-grid">
+        <div
+          v-for="card in whyCards"
+          :key="card.text"
+          class="why-card reveal-up"
+          :class="'-' + card.tint"
+        >
+          <div class="why-card-icon">
+            <svg viewBox="0 0 64 64" fill="none"><path :d="whyIconPaths[card.icon]" stroke-linecap="round" stroke-linejoin="round" /></svg>
+          </div>
+          <p class="why-card-text">{{ card.text }}</p>
+        </div>
       </div>
     </section>
 
