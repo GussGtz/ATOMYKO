@@ -49,6 +49,18 @@ const teaserOpen = ref(serviceTeasers.map((_, i) => (i === 0 ? 1 : 0)))
 
 const stack = ['VUE.JS', 'JAVASCRIPT', 'NODE.JS', 'POSTGRESQL', 'API', 'CLOUD', 'SEO', 'ADS', 'ANALYTICS']
 
+// Abstract mockups, not real client screenshots — we don't have
+// real product photography to show yet, so this teases the kind of
+// work we do without passing off a mockup as an actual delivery.
+const workCards = [
+  { type: 'browser', accent: 'var(--c-blue)', text: 'Plataformas web a medida, construidas para crecer con el negocio.' },
+  { type: 'phone', accent: 'var(--c-violet)', text: 'Apps móviles pensadas de punta a punta, del primer boceto al lanzamiento.' },
+  { type: 'browser', accent: 'var(--c-amber)', text: 'Presencia digital renovada para marcas que ya operan en el mercado.' },
+  { type: 'phone', accent: 'var(--c-green)', text: 'Herramientas de producto con una interfaz simple y directa.' },
+  { type: 'browser', accent: 'var(--c-pink)', text: 'Sistemas de marketing y contenido pensados para convertir.' },
+  { type: 'phone', accent: 'var(--c-blue)', text: 'Identidad y experiencia digital consistentes en cada punto de contacto.' }
+]
+
 // Real clients only.
 const logoCloud = [
   // hidden: true — temporarily off at the client's request, not deleted.
@@ -303,6 +315,46 @@ function runHeroIntro() {
       >
         <div v-for="logo in visibleLogoCloud" :key="logo.name" class="logo-cloud-item">
           <img :src="logo.image" :alt="logo.alt" />
+        </div>
+      </div>
+    </section>
+
+    <!-- =========================
+         TRABAJO DESTACADO
+    ========================== -->
+
+    <section class="section work-section">
+      <h2 class="reveal-mask">
+        <span class="mask-line"><span class="mask-line-inner">Trabajo destacado.</span></span>
+      </h2>
+
+      <div class="work-grid">
+        <div v-for="card in workCards" :key="card.text" class="work-item reveal-up">
+          <div class="work-art" :style="{ '--accent': card.accent }">
+            <div v-if="card.type === 'browser'" class="project-browser work-browser">
+              <div class="pb-bar"><i></i><i></i><i></i><span>atomyko.digital</span></div>
+              <div class="pb-body">
+                <div class="pb-title"></div>
+                <div class="pb-grid">
+                  <div class="pb-card -big"></div>
+                  <div class="pb-card"></div>
+                  <div class="pb-card"></div>
+                </div>
+                <div class="pb-chart"><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+              </div>
+            </div>
+
+            <div v-else class="work-phone">
+              <div class="work-phone-notch"></div>
+              <div class="work-phone-body">
+                <div class="pb-title" style="width: 65%;"></div>
+                <div class="pb-card" style="height: 70px;"></div>
+                <div class="pb-card"></div>
+                <div class="pb-card"></div>
+              </div>
+            </div>
+          </div>
+          <p class="work-caption">{{ card.text }}</p>
         </div>
       </div>
     </section>

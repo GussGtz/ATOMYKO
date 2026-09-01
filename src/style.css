@@ -608,6 +608,66 @@ img { max-width: 100%; display: block; }
 }
 
 /* =========================
+   TRABAJO DESTACADO
+========================= */
+
+.work-section { background: var(--black); color: var(--white); }
+.work-section h2 {
+  margin: 0 0 60px;
+  font-size: clamp(2.3rem, 5vw, 4.4rem);
+  line-height: 1;
+  letter-spacing: -.035em;
+  font-weight: 700;
+}
+.work-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 60px 30px;
+}
+.work-item:nth-child(2n) { margin-top: 70px; }
+.work-art {
+  position: relative;
+  aspect-ratio: 4 / 3;
+  border-radius: var(--r-lg);
+  display: grid;
+  place-items: center;
+  background:
+    radial-gradient(circle at 80% 15%, color-mix(in srgb, var(--accent) 55%, transparent), transparent 55%),
+    linear-gradient(155deg, #1c1c1f, var(--black) 62%);
+  overflow: hidden;
+}
+.work-art::after {
+  content: '';
+  position: absolute;
+  width: 260px;
+  height: 260px;
+  border-radius: 50%;
+  background: var(--accent);
+  filter: blur(90px);
+  opacity: .35;
+  right: -40px;
+  bottom: -60px;
+}
+.work-browser { width: 78%; }
+.work-phone {
+  position: relative;
+  width: 46%;
+  aspect-ratio: 9 / 18;
+  border-radius: 26px;
+  overflow: hidden;
+  background: var(--white);
+  box-shadow: 0 30px 70px rgba(0, 0, 0, .35);
+  transform: rotate(-1.6deg);
+  padding: 22px 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.work-phone-notch { position: absolute; top: 10px; left: 50%; transform: translateX(-50%); width: 34%; height: 6px; border-radius: var(--r-full); background: var(--gray-200); }
+.work-phone-body { margin-top: 20px; display: flex; flex-direction: column; gap: 8px; }
+.work-caption { margin: 18px 0 0; max-width: 90%; color: rgba(255, 255, 255, .55); font-size: .86rem; line-height: 1.6; }
+
+/* =========================
    HOME TEASER ROWS
 ========================= */
 
@@ -1375,6 +1435,8 @@ footer {
   .why-card,
   .why-card:nth-child(4),
   .why-card:nth-child(5) { grid-column: span 1; min-height: 0; }
+  .work-grid { grid-template-columns: 1fr; gap: 40px; }
+  .work-item:nth-child(2n) { margin-top: 0; }
   .contact { padding: 110px 20px; }
   .contact-form { padding: 26px; margin-top: 40px; }
   .contact-fields { grid-template-columns: 1fr; }
