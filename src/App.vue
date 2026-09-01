@@ -76,6 +76,7 @@ function onPageEnter(el, done) {
     duration: .55,
     ease: 'power3.out',
     delay: .18,
+    clearProps: 'transform',
     onComplete: done
   })
 
