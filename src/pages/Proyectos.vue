@@ -4,6 +4,7 @@ import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { fixScrollTriggerPositions } from '../composables/scrollFix'
 import { useReveal } from '../composables/reveal'
+import gcsProjectVideo from '../assets/gcs-project.mp4'
 
 gsap.registerPlugin(ScrollTrigger)
 
@@ -28,11 +29,13 @@ const projects = [
   },
   {
     index: '03',
-    category: 'BRAND / DIGITAL',
-    title: 'Marcas que se hacen notar.',
-    metric: '2.4M',
-    detail: 'personas alcanzadas',
-    accent: 'var(--c-amber)'
+    category: 'CONTABILIDAD / WEB',
+    title: 'Confianza contable, en un sitio claro.',
+    metric: '7',
+    detail: 'servicios contables en un solo sitio',
+    accent: 'var(--c-amber)',
+    video: gcsProjectVideo,
+    link: 'https://gcs-asociados.vercel.app/'
   }
 ]
 
@@ -70,8 +73,18 @@ onBeforeUnmount(() => ctx?.revert())
           class="project-card reveal-up"
           :style="{ '--accent': project.accent }"
         >
-          <div class="project-art">
-            <div class="project-browser">
+          <div class="project-art" :class="{ '-video': project.video }">
+            <video
+              v-if="project.video"
+              class="project-video"
+              :src="project.video"
+              autoplay
+              muted
+              loop
+              playsinline
+            ></video>
+
+            <div v-else class="project-browser">
               <div class="pb-bar"><i></i><i></i><i></i><span>atomyko.digital</span></div>
               <div class="pb-body">
                 <div class="pb-title"></div>
@@ -92,6 +105,16 @@ onBeforeUnmount(() => ctx?.revert())
               <strong>{{ project.metric }}</strong>
               <span>{{ project.detail }}</span>
             </div>
+            <a
+              v-if="project.link"
+              :href="project.link"
+              target="_blank"
+              rel="noopener"
+              class="section-link -cursor-hover"
+              style="margin-top: 16px;"
+            >
+              Ver sitio <b>↗</b>
+            </a>
           </div>
         </article>
       </div>
