@@ -206,7 +206,7 @@ onBeforeUnmount(() => {
       <div class="desktop-nav">
         <nav class="nav-links">
           <router-link
-            v-for="item in navItems.slice(1, 4)"
+            v-for="item in navItems.slice(0, 4)"
             :key="item.path"
             :to="item.path"
             :class="{ '-active': route.name === item.name }"
