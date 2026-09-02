@@ -1117,6 +1117,58 @@ img { max-width: 100%; display: block; }
 .why-card-text { margin: 0; max-width: 320px; color: var(--gray-900); font-size: 1.05rem; line-height: 1.5; letter-spacing: -.01em; }
 
 /* =========================
+   SERVICE CAPABILITIES (SERVICIOS PAGE)
+========================= */
+
+.cap-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+.cap-card {
+  display: flex;
+  flex-direction: column;
+  padding: 30px;
+  border-radius: var(--r-lg);
+  background: var(--paper);
+  box-shadow: 0 20px 40px rgba(10, 10, 11, .05);
+  transition: transform .4s var(--ease), box-shadow .4s var(--ease);
+}
+.cap-card:hover { transform: translateY(-6px); box-shadow: 0 26px 50px rgba(10, 10, 11, .09); }
+.cap-card-head { display: flex; align-items: center; justify-content: space-between; }
+.cap-card-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  border-radius: 14px;
+  background: color-mix(in srgb, var(--accent) 15%, transparent);
+}
+.cap-card-icon svg { width: 22px; height: 22px; stroke: var(--accent); stroke-width: 1.7; fill: none; }
+.cap-card h3 { margin: 24px 0 10px; font-size: 1.2rem; letter-spacing: -.02em; font-weight: 700; }
+.cap-card > p { margin: 0; color: var(--gray-600); font-size: .88rem; line-height: 1.6; min-height: 3.2em; }
+.cap-tags { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 22px; }
+.cap-tag {
+  padding: 6px 12px;
+  border-radius: var(--r-full);
+  border: 1px solid var(--line);
+  color: var(--gray-700);
+  font-size: .74rem;
+  font-weight: 500;
+}
+.cap-extras {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 40px;
+  margin-top: 70px;
+  padding-top: 50px;
+  border-top: 1px solid var(--line-soft);
+}
+.cap-extra h4 { margin: 0 0 10px; font-size: .95rem; font-weight: 700; letter-spacing: -.01em; }
+.cap-extra p { margin: 0; color: var(--gray-600); font-size: .84rem; line-height: 1.65; }
+
+/* =========================
    STACK MARQUEE
 ========================= */
 
@@ -1483,6 +1535,8 @@ footer {
   .benefit-row-desc { grid-column: 1 / -1; max-width: 100%; }
   .logo-cloud { grid-template-columns: repeat(3, 1fr) !important; row-gap: 70px; }
   .why-head { grid-template-columns: 1fr; gap: 20px; }
+  .cap-grid { grid-template-columns: 1fr 1fr; }
+  .cap-extras { grid-template-columns: 1fr 1fr; }
   .side-nav { display: none; }
 }
 
@@ -1512,6 +1566,8 @@ footer {
   .why-card:nth-child(5) { grid-column: span 1; min-height: 0; }
   .work-grid { grid-template-columns: 1fr; gap: 40px; }
   .work-item:nth-child(2n) { margin-top: 0; }
+  .cap-grid { grid-template-columns: 1fr; gap: 16px; }
+  .cap-extras { grid-template-columns: 1fr; gap: 30px; margin-top: 50px; padding-top: 40px; }
   .contact { padding: 110px 20px; }
   .contact-form { padding: 26px; margin-top: 40px; }
   .contact-fields { grid-template-columns: 1fr; }

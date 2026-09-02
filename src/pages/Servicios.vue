@@ -6,7 +6,7 @@ import { fixScrollTriggerPositions } from '../composables/scrollFix'
 import { useReveal } from '../composables/reveal'
 import spotlightVideo from '../assets/servicios-bg.mp4'
 import introVideo from '../assets/servicios-intro.mp4'
-import WorkShowcase from '../components/WorkShowcase.vue'
+import ServiceCapabilities from '../components/ServiceCapabilities.vue'
 
 gsap.registerPlugin(ScrollTrigger)
 
@@ -124,7 +124,7 @@ onBeforeUnmount(() => ctx?.revert())
       </div>
     </section>
 
-    <WorkShowcase />
+    <ServiceCapabilities />
 
     <!-- =========================
          VIDEO DE MARCA
