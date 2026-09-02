@@ -32,8 +32,7 @@ const projects = [
     category: 'CONTABILIDAD / WEB',
     title: 'Confianza contable, en un sitio claro.',
     text: 'Diseñamos y desarrollamos desde cero el sitio de GCS y Asociados: una presencia digital moderna que transmite la seriedad de un despacho contable desde el primer scroll, con un recorrido pensado para convertir visitas en consultas agendadas.',
-    metric: '7',
-    detail: 'servicios contables en un solo sitio',
+    checkText: 'Otro cliente satisfecho',
     accent: 'var(--c-amber)',
     video: gcsProjectVideo
   }
@@ -102,7 +101,13 @@ onBeforeUnmount(() => ctx?.revert())
             <div class="project-tag">{{ project.category }}</div>
             <h3>{{ project.title }}</h3>
             <p v-if="project.text" class="project-text">{{ project.text }}</p>
-            <div class="project-result">
+
+            <div v-if="project.checkText" class="project-check">
+              <svg viewBox="0 0 64 64" fill="none"><path d="M14 34 L28 48 L52 18" stroke-linecap="round" stroke-linejoin="round" /></svg>
+              <span>{{ project.checkText }}</span>
+            </div>
+
+            <div v-else class="project-result">
               <strong>{{ project.metric }}</strong>
               <span>{{ project.detail }}</span>
             </div>
