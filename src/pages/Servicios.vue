@@ -78,16 +78,6 @@ onBeforeUnmount(() => ctx?.revert())
     </section>
 
     <!-- =========================
-         VIDEO DE MARCA
-    ========================== -->
-
-    <section class="section" style="padding-top: 0;">
-      <div class="services-intro-video reveal-up">
-        <video :src="introVideo" autoplay muted loop playsinline></video>
-      </div>
-    </section>
-
-    <!-- =========================
          SPOTLIGHT SEQUENCE
     ========================== -->
 
@@ -135,6 +125,16 @@ onBeforeUnmount(() => ctx?.revert())
     </section>
 
     <WorkShowcase />
+
+    <!-- =========================
+         VIDEO DE MARCA
+    ========================== -->
+
+    <section class="section" style="padding-top: 0;">
+      <div class="services-intro-video reveal-up">
+        <video :src="introVideo" autoplay muted loop playsinline></video>
+      </div>
+    </section>
 
     <!-- =========================
          CTA
