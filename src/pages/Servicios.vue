@@ -5,6 +5,7 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { fixScrollTriggerPositions } from '../composables/scrollFix'
 import { useReveal } from '../composables/reveal'
 import spotlightVideo from '../assets/servicios-bg.mp4'
+import introVideo from '../assets/servicios-intro.mp4'
 import WorkShowcase from '../components/WorkShowcase.vue'
 
 gsap.registerPlugin(ScrollTrigger)
@@ -74,6 +75,16 @@ onBeforeUnmount(() => ctx?.revert())
         Del primer concepto al usuario final. Diseñamos, construimos
         y hacemos crecer productos digitales bajo un mismo equipo.
       </p>
+    </section>
+
+    <!-- =========================
+         VIDEO DE MARCA
+    ========================== -->
+
+    <section class="section" style="padding-top: 0;">
+      <div class="services-intro-video reveal-up">
+        <video :src="introVideo" autoplay muted loop playsinline></video>
+      </div>
     </section>
 
     <!-- =========================
