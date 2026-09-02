@@ -15,6 +15,7 @@ import workSoftwarePhoto from '../assets/work/software-team.jpg'
 import workMobilePhoto from '../assets/work/mobile-app.jpg'
 import workBrandPhoto from '../assets/work/brand-presence.jpg'
 import workProductPhoto from '../assets/work/product-tool.jpg'
+import workMarketingPhoto from '../assets/work/marketing-content.jpg'
 
 gsap.registerPlugin(ScrollTrigger)
 
@@ -61,7 +62,7 @@ const workCards = [
   { type: 'photo', photo: workMobilePhoto, accent: 'var(--c-violet)', text: 'Apps móviles pensadas de punta a punta, del primer boceto al lanzamiento.' },
   { type: 'photo', photo: workBrandPhoto, accent: 'var(--c-amber)', text: 'Presencia digital renovada para marcas que ya operan en el mercado.' },
   { type: 'photo', photo: workProductPhoto, accent: 'var(--c-green)', text: 'Herramientas de producto con una interfaz simple y directa.' },
-  { type: 'browser', accent: 'var(--c-pink)', text: 'Sistemas de marketing y contenido pensados para convertir.' },
+  { type: 'photo', photo: workMarketingPhoto, accent: 'var(--c-pink)', text: 'Sistemas de marketing y contenido pensados para convertir.' },
   { type: 'phone', accent: 'var(--c-blue)', text: 'Identidad y experiencia digital consistentes en cada punto de contacto.' }
 ]
 
@@ -329,7 +330,7 @@ function runHeroIntro() {
 
     <section class="section work-section">
       <h2 class="reveal-mask">
-        <span class="mask-line"><span class="mask-line-inner">Trabajo destacado.</span></span>
+        <span class="mask-line"><span class="mask-line-inner">¿Qué podemos hacer por ti?</span></span>
       </h2>
 
       <div class="work-grid">
