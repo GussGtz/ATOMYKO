@@ -116,11 +116,11 @@ const whyIconPaths = {
 // project counts for a brand this new. Real facts or qualitative
 // statements, never fabricated stats.
 const whyCards = [
-  { icon: 'star', text: 'Atención personalizada en cada proyecto, sin perdernos entre cuentas grandes.' },
-  { icon: 'grid', text: 'Clientes de distintos giros — deporte, contabilidad, transporte, tecnología — ya confían en nosotros.' },
-  { icon: 'heart', text: 'Construimos relaciones de largo plazo, no proyectos de una sola vez.' },
-  { icon: 'layers', text: 'Estrategia, diseño y desarrollo bajo un mismo equipo, sin intermediarios.' },
-  { icon: 'bars', text: 'Medimos el éxito en resultados reales para tu negocio, no solo en entregables bonitos.' }
+  { icon: 'star', accent: 'var(--c-blue)', text: 'Atención personalizada en cada proyecto, sin perdernos entre cuentas grandes.' },
+  { icon: 'grid', accent: 'var(--c-violet)', text: 'Clientes de distintos giros — deporte, contabilidad, transporte, tecnología — ya confían en nosotros.' },
+  { icon: 'heart', accent: 'var(--c-pink)', text: 'Construimos relaciones de largo plazo, no proyectos de una sola vez.' },
+  { icon: 'layers', accent: 'var(--c-amber)', text: 'Estrategia, diseño y desarrollo bajo un mismo equipo, sin intermediarios.' },
+  { icon: 'bars', accent: 'var(--c-green)', text: 'Medimos el éxito en resultados reales para tu negocio, no solo en entregables bonitos.' }
 ]
 
 // 0 = scattered/overlapping like a dropped hand of cards, 1 = settled
@@ -415,6 +415,7 @@ function runHeroIntro() {
           v-for="card in whyCards"
           :key="card.text"
           class="why-card reveal-up"
+          :style="{ '--accent': card.accent }"
         >
           <div class="why-card-icon">
             <svg viewBox="0 0 64 64" fill="none"><path :d="whyIconPaths[card.icon]" stroke-linecap="round" stroke-linejoin="round" /></svg>
