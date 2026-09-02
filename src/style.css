@@ -594,7 +594,7 @@ img { max-width: 100%; display: block; }
 }
 
 .services-intro-video {
-  aspect-ratio: 16 / 9;
+  aspect-ratio: 21 / 8;
   border-radius: var(--r-xl);
   overflow: hidden;
   box-shadow: 0 30px 70px rgba(10, 10, 11, .18);
