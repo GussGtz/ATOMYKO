@@ -130,7 +130,9 @@ onBeforeUnmount(() => ctx?.revert())
          VIDEO DE MARCA
     ========================== -->
 
-    <section class="section" style="padding-top: 0;">
+    <section class="section services-intro-section">
+      <div class="eyebrow reveal-up" style="justify-content: center;">ATOMYKO</div>
+      <h2 class="reveal-up">Una marca, un solo lenguaje visual.</h2>
       <div class="services-intro-video reveal-up">
         <video :src="introVideo" autoplay muted loop playsinline></video>
       </div>
