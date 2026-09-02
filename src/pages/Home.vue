@@ -13,6 +13,8 @@ import jugarLaPelotaLogo from '../assets/clients/jugarlapelota.png'
 import glassCaribeLogo from '../assets/clients/glass-caribe.svg'
 import workSoftwarePhoto from '../assets/work/software-team.jpg'
 import workMobilePhoto from '../assets/work/mobile-app.jpg'
+import workBrandPhoto from '../assets/work/brand-presence.jpg'
+import workProductPhoto from '../assets/work/product-tool.jpg'
 
 gsap.registerPlugin(ScrollTrigger)
 
@@ -57,8 +59,8 @@ const stack = ['VUE.JS', 'JAVASCRIPT', 'NODE.JS', 'POSTGRESQL', 'API', 'CLOUD', 
 const workCards = [
   { type: 'photo', photo: workSoftwarePhoto, accent: 'var(--c-blue)', text: 'Plataformas web a medida, construidas para crecer con el negocio.' },
   { type: 'photo', photo: workMobilePhoto, accent: 'var(--c-violet)', text: 'Apps móviles pensadas de punta a punta, del primer boceto al lanzamiento.' },
-  { type: 'browser', accent: 'var(--c-amber)', text: 'Presencia digital renovada para marcas que ya operan en el mercado.' },
-  { type: 'phone', accent: 'var(--c-green)', text: 'Herramientas de producto con una interfaz simple y directa.' },
+  { type: 'photo', photo: workBrandPhoto, accent: 'var(--c-amber)', text: 'Presencia digital renovada para marcas que ya operan en el mercado.' },
+  { type: 'photo', photo: workProductPhoto, accent: 'var(--c-green)', text: 'Herramientas de producto con una interfaz simple y directa.' },
   { type: 'browser', accent: 'var(--c-pink)', text: 'Sistemas de marketing y contenido pensados para convertir.' },
   { type: 'phone', accent: 'var(--c-blue)', text: 'Identidad y experiencia digital consistentes en cada punto de contacto.' }
 ]
