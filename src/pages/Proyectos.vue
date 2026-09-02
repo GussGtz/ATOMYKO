@@ -31,11 +31,11 @@ const projects = [
     index: '03',
     category: 'CONTABILIDAD / WEB',
     title: 'Confianza contable, en un sitio claro.',
+    text: 'Diseñamos y desarrollamos desde cero el sitio de GCS y Asociados: una presencia digital moderna que transmite la seriedad de un despacho contable desde el primer scroll, con un recorrido pensado para convertir visitas en consultas agendadas.',
     metric: '7',
     detail: 'servicios contables en un solo sitio',
     accent: 'var(--c-amber)',
-    video: gcsProjectVideo,
-    link: 'https://gcs-asociados.vercel.app/'
+    video: gcsProjectVideo
   }
 ]
 
@@ -101,20 +101,11 @@ onBeforeUnmount(() => ctx?.revert())
           <div class="project-info">
             <div class="project-tag">{{ project.category }}</div>
             <h3>{{ project.title }}</h3>
+            <p v-if="project.text" class="project-text">{{ project.text }}</p>
             <div class="project-result">
               <strong>{{ project.metric }}</strong>
               <span>{{ project.detail }}</span>
             </div>
-            <a
-              v-if="project.link"
-              :href="project.link"
-              target="_blank"
-              rel="noopener"
-              class="section-link -cursor-hover"
-              style="margin-top: 16px;"
-            >
-              Ver sitio <b>↗</b>
-            </a>
           </div>
         </article>
       </div>
