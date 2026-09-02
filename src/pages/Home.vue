@@ -16,6 +16,7 @@ import workMobilePhoto from '../assets/work/mobile-app.jpg'
 import workBrandPhoto from '../assets/work/brand-presence.jpg'
 import workProductPhoto from '../assets/work/product-tool.jpg'
 import workMarketingPhoto from '../assets/work/marketing-content.jpg'
+import workExperiencePhoto from '../assets/work/brand-experience.jpg'
 
 gsap.registerPlugin(ScrollTrigger)
 
@@ -63,7 +64,7 @@ const workCards = [
   { type: 'photo', photo: workBrandPhoto, accent: 'var(--c-amber)', text: 'Presencia digital renovada para marcas que ya operan en el mercado.' },
   { type: 'photo', photo: workProductPhoto, accent: 'var(--c-green)', text: 'Herramientas de producto con una interfaz simple y directa.' },
   { type: 'photo', photo: workMarketingPhoto, accent: 'var(--c-pink)', text: 'Sistemas de marketing y contenido pensados para convertir.' },
-  { type: 'phone', accent: 'var(--c-blue)', text: 'Identidad y experiencia digital consistentes en cada punto de contacto.' }
+  { type: 'photo', photo: workExperiencePhoto, accent: 'var(--c-blue)', text: 'Identidad y experiencia digital consistentes en cada punto de contacto.' }
 ]
 
 // Real clients only.
