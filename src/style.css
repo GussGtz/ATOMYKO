@@ -648,6 +648,7 @@ img { max-width: 100%; display: block; }
   right: -40px;
   bottom: -60px;
 }
+.work-photo { width: 100%; height: 100%; object-fit: cover; }
 .work-browser { width: 78%; }
 .work-phone {
   position: relative;

@@ -11,6 +11,8 @@ import gcsLogo from '../assets/clients/gcs-asociados-light.png'
 import cwcLogo from '../assets/clients/cancun-world-class.png'
 import jugarLaPelotaLogo from '../assets/clients/jugarlapelota.png'
 import glassCaribeLogo from '../assets/clients/glass-caribe.svg'
+import workSoftwarePhoto from '../assets/work/software-team.jpg'
+import workMobilePhoto from '../assets/work/mobile-app.jpg'
 
 gsap.registerPlugin(ScrollTrigger)
 
@@ -53,8 +55,8 @@ const stack = ['VUE.JS', 'JAVASCRIPT', 'NODE.JS', 'POSTGRESQL', 'API', 'CLOUD', 
 // real product photography to show yet, so this teases the kind of
 // work we do without passing off a mockup as an actual delivery.
 const workCards = [
-  { type: 'browser', accent: 'var(--c-blue)', text: 'Plataformas web a medida, construidas para crecer con el negocio.' },
-  { type: 'phone', accent: 'var(--c-violet)', text: 'Apps móviles pensadas de punta a punta, del primer boceto al lanzamiento.' },
+  { type: 'photo', photo: workSoftwarePhoto, accent: 'var(--c-blue)', text: 'Plataformas web a medida, construidas para crecer con el negocio.' },
+  { type: 'photo', photo: workMobilePhoto, accent: 'var(--c-violet)', text: 'Apps móviles pensadas de punta a punta, del primer boceto al lanzamiento.' },
   { type: 'browser', accent: 'var(--c-amber)', text: 'Presencia digital renovada para marcas que ya operan en el mercado.' },
   { type: 'phone', accent: 'var(--c-green)', text: 'Herramientas de producto con una interfaz simple y directa.' },
   { type: 'browser', accent: 'var(--c-pink)', text: 'Sistemas de marketing y contenido pensados para convertir.' },
@@ -331,7 +333,9 @@ function runHeroIntro() {
       <div class="work-grid">
         <div v-for="card in workCards" :key="card.text" class="work-item reveal-up">
           <div class="work-art" :style="{ '--accent': card.accent }">
-            <div v-if="card.type === 'browser'" class="project-browser work-browser">
+            <img v-if="card.type === 'photo'" :src="card.photo" alt="" class="work-photo" />
+
+            <div v-else-if="card.type === 'browser'" class="project-browser work-browser">
               <div class="pb-bar"><i></i><i></i><i></i><span>atomyko.digital</span></div>
               <div class="pb-body">
                 <div class="pb-title"></div>
