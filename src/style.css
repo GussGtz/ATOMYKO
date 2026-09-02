@@ -927,8 +927,15 @@ img { max-width: 100%; display: block; }
   object-fit: cover;
 }
 .project-video-split { display: flex; width: 100%; height: 100%; gap: 2px; }
-.project-video-split-item { position: relative; flex: 1; overflow: hidden; }
-.project-video-split-item .project-video { display: block; }
+.project-video-split-item {
+  position: relative;
+  flex: 1;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  background: var(--paper);
+}
+.project-video-split-item .project-video { display: block; height: auto; object-fit: contain; }
 .project-video-label {
   position: absolute;
   left: 14px;
