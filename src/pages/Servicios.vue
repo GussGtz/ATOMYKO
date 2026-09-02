@@ -5,6 +5,7 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { fixScrollTriggerPositions } from '../composables/scrollFix'
 import { useReveal } from '../composables/reveal'
 import spotlightVideo from '../assets/servicios-bg.mp4'
+import WorkShowcase from '../components/WorkShowcase.vue'
 
 gsap.registerPlugin(ScrollTrigger)
 
@@ -121,6 +122,8 @@ onBeforeUnmount(() => ctx?.revert())
 
       </div>
     </section>
+
+    <WorkShowcase />
 
     <!-- =========================
          CTA
