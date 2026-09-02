@@ -5,6 +5,8 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { fixScrollTriggerPositions } from '../composables/scrollFix'
 import { useReveal } from '../composables/reveal'
 import gcsProjectVideo from '../assets/gcs-project.mp4'
+import transferPublicVideo from '../assets/transfer-public.mp4'
+import transferAdminVideo from '../assets/transfer-admin.mp4'
 
 gsap.registerPlugin(ScrollTrigger)
 
@@ -21,11 +23,16 @@ const projects = [
   },
   {
     index: '02',
-    category: 'E-COMMERCE / GROWTH',
-    title: 'Experiencias que convierten.',
-    metric: '3.8×',
-    detail: 'retorno de campaña',
-    accent: 'var(--c-pink)'
+    category: 'TRANSPORTE / CMS A MEDIDA',
+    title: 'Todo su negocio, en un panel a la medida.',
+    text: 'Para Cancún World Class construimos un sitio de reservas en 4 idiomas y un panel de administración completo: gestionan vehículos, tarifas por zona, hoteles, tours y hasta el contenido del sitio sin tocar una línea de código.',
+    metric: '4',
+    detail: 'idiomas disponibles en el sitio',
+    accent: 'var(--c-pink)',
+    videos: [
+      { src: transferPublicVideo, label: 'Sitio público' },
+      { src: transferAdminVideo, label: 'Panel admin' }
+    ]
   },
   {
     index: '03',
@@ -72,9 +79,23 @@ onBeforeUnmount(() => ctx?.revert())
           class="project-card reveal-up"
           :style="{ '--accent': project.accent }"
         >
-          <div class="project-art" :class="{ '-video': project.video }">
+          <div class="project-art" :class="{ '-video': project.video || project.videos }">
+            <div v-if="project.videos" class="project-video-split">
+              <div v-for="v in project.videos" :key="v.label" class="project-video-split-item">
+                <video
+                  class="project-video"
+                  :src="v.src"
+                  autoplay
+                  muted
+                  loop
+                  playsinline
+                ></video>
+                <span class="project-video-label">{{ v.label }}</span>
+              </div>
+            </div>
+
             <video
-              v-if="project.video"
+              v-else-if="project.video"
               class="project-video"
               :src="project.video"
               autoplay
