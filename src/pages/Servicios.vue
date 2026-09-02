@@ -4,6 +4,7 @@ import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { fixScrollTriggerPositions } from '../composables/scrollFix'
 import { useReveal } from '../composables/reveal'
+import spotlightVideo from '../assets/servicios-bg.mp4'
 
 gsap.registerPlugin(ScrollTrigger)
 
@@ -16,22 +17,19 @@ const services = [
     number: '01',
     title: 'Desarrollo de Software',
     text: 'Plataformas, sistemas y aplicaciones a medida diseñadas para resolver problemas reales y escalar contigo. Arquitectura pensada desde el día uno para crecer sin reescrituras.',
-    accent: 'var(--c-blue)',
-    shape: 'bars'
+    accent: 'var(--c-blue)'
   },
   {
     number: '02',
     title: 'Marketing Digital',
     text: 'Estrategia, contenido, campañas y adquisición para convertir atención en clientes y crecimiento. Medimos lo que importa, no solo lo que es fácil de medir.',
-    accent: 'var(--c-violet)',
-    shape: 'chevron'
+    accent: 'var(--c-violet)'
   },
   {
     number: '03',
     title: 'Diseño & Branding',
     text: 'Identidades y experiencias digitales que hacen que una empresa se vea tan buena como realmente es. Sistemas visuales consistentes, no piezas sueltas.',
-    accent: 'var(--c-amber)',
-    shape: 'arcs'
+    accent: 'var(--c-amber)'
   }
 ]
 
@@ -89,15 +87,16 @@ onBeforeUnmount(() => ctx?.revert())
           <div class="spotlight-count"><b>{{ String(activeService + 1).padStart(2, '0') }}</b> / {{ String(services.length).padStart(2, '0') }}</div>
         </div>
 
-        <div
-          v-for="(service, i) in services"
-          :key="'glow' + service.number"
-          class="spotlight-glow"
-          :class="{ '-active': activeService === i }"
-        >
-          <div class="shape-stack" :class="'-' + service.shape">
-            <i></i><i></i><i></i><i></i><i></i>
-          </div>
+        <div class="spotlight-media">
+          <video
+            class="spotlight-media-video"
+            :src="spotlightVideo"
+            autoplay
+            muted
+            loop
+            playsinline
+          ></video>
+          <div class="spotlight-media-fade"></div>
         </div>
 
         <router-link
