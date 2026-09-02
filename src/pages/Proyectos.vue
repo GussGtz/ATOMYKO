@@ -82,15 +82,17 @@ onBeforeUnmount(() => ctx?.revert())
           <div class="project-art" :class="{ '-video': project.video || project.videos }">
             <div v-if="project.videos" class="project-video-split">
               <div v-for="v in project.videos" :key="v.label" class="project-video-split-item">
-                <video
-                  class="project-video"
-                  :src="v.src"
-                  autoplay
-                  muted
-                  loop
-                  playsinline
-                ></video>
-                <span class="project-video-label">{{ v.label }}</span>
+                <div class="project-video-frame">
+                  <div class="pb-bar"><i></i><i></i><i></i><span>{{ v.label }}</span></div>
+                  <video
+                    class="project-video"
+                    :src="v.src"
+                    autoplay
+                    muted
+                    loop
+                    playsinline
+                  ></video>
+                </div>
               </div>
             </div>
 
