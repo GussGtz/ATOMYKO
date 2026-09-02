@@ -294,7 +294,8 @@ function runHeroIntro() {
     ========================== -->
 
     <!-- Real client logos only — no invented/placeholder brands. -->
-    <section class="section logo-cloud-section">
+    <!-- v-if="false" — oculto a pedido del cliente, no eliminado. -->
+    <section v-if="false" class="section logo-cloud-section">
       <div class="eyebrow reveal-up" style="justify-content: center;">EMPRESAS QUE CONFÍAN</div>
 
       <div
