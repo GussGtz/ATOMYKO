@@ -17,21 +17,39 @@ const activeService = ref(0)
 const services = [
   {
     number: '01',
-    title: 'Desarrollo de Software',
-    text: 'Plataformas, sistemas y aplicaciones a medida diseñadas para resolver problemas reales y escalar contigo. Arquitectura pensada desde el día uno para crecer sin reescrituras.',
+    title: 'Desarrollo Web',
+    text: 'Sitios corporativos, landing pages, tiendas en línea y plataformas administrables. Sitios que no solo se ven bien, sino que resuelven un objetivo de negocio concreto.',
     accent: 'var(--c-blue)'
   },
   {
     number: '02',
-    title: 'Marketing Digital',
-    text: 'Estrategia, contenido, campañas y adquisición para convertir atención en clientes y crecimiento. Medimos lo que importa, no solo lo que es fácil de medir.',
+    title: 'Desarrollo de Software',
+    text: 'ERP, CRM y sistemas empresariales a la medida, diseñados para resolver problemas reales y escalar contigo. Arquitectura pensada desde el día uno para crecer sin reescrituras.',
     accent: 'var(--c-violet)'
   },
   {
     number: '03',
-    title: 'Diseño & Branding',
-    text: 'Identidades y experiencias digitales que hacen que una empresa se vea tan buena como realmente es. Sistemas visuales consistentes, no piezas sueltas.',
+    title: 'Aplicaciones',
+    text: 'Apps para Android, iOS y PWA que conectan tu operación con tus clientes y tu equipo, dentro de un mismo ecosistema con tu software y tu sitio web.',
+    accent: 'var(--c-pink)'
+  },
+  {
+    number: '04',
+    title: 'Automatización',
+    text: 'Digitalizamos procesos manuales, conectamos sistemas y generamos reportes en tiempo real, para que la información fluya sola en vez de vivir en hojas de cálculo.',
     accent: 'var(--c-amber)'
+  },
+  {
+    number: '05',
+    title: 'Marketing & Branding',
+    text: 'Identidad de marca, contenido, redes sociales y publicidad digital pensados para convertir atención en clientes, no solo en alcance.',
+    accent: 'var(--c-green)'
+  },
+  {
+    number: '06',
+    title: 'IA & Tecnología',
+    text: 'Chatbots, asistentes con IA e integraciones con las herramientas que ya usas — WhatsApp, Stripe, sistemas de facturación — para automatizar lo repetitivo.',
+    accent: 'var(--c-blue)'
   }
 ]
 
