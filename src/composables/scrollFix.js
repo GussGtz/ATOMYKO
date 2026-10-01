@@ -10,13 +10,25 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger'
    (it's still there, just waiting for a scroll position that no
    longer lines up with anything). Call this once per page mount to
    re-measure everything after the page has actually settled.
+
+   Calls are coalesced: every page mount and every route transition
+   asks for this, and a refresh re-lays-out the whole page, so stacking
+   them up mid-transition is what made page changes stutter. A new
+   call replaces the pending timers instead of adding to them.
 ========================= */
 
+let timers = []
+let fontsHooked = false
+
 export function fixScrollTriggerPositions() {
-  document.fonts?.ready?.then(() => ScrollTrigger.refresh())
-  window.addEventListener('load', () => ScrollTrigger.refresh())
-  // Covers slower settles (hero video metadata, late images) that
-  // neither of the above catches.
-  setTimeout(() => ScrollTrigger.refresh(), 400)
-  setTimeout(() => ScrollTrigger.refresh(), 1200)
+  timers.forEach(clearTimeout)
+  // 700ms lands after the route transition has finished; 1600ms covers
+  // slower settles (hero video metadata, late images).
+  timers = [700, 1600].map((ms) => setTimeout(() => ScrollTrigger.refresh(), ms))
+
+  if (!fontsHooked) {
+    fontsHooked = true
+    document.fonts?.ready?.then(() => ScrollTrigger.refresh())
+    window.addEventListener('load', () => ScrollTrigger.refresh(), { once: true })
+  }
 }

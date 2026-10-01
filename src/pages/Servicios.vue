@@ -1,18 +1,19 @@
 <script setup>
-import { ref, onMounted, onBeforeUnmount } from 'vue'
-import gsap from 'gsap'
-import { ScrollTrigger } from 'gsap/ScrollTrigger'
-import { fixScrollTriggerPositions } from '../composables/scrollFix'
+import { ref } from 'vue'
 import { useReveal } from '../composables/reveal'
+import { useSteppedScroll } from '../composables/steppedScroll'
 import spotlightVideo from '../assets/servicios-bg.mp4'
 import introVideo from '../assets/servicios-intro.mp4'
 import ServiceCapabilities from '../components/ServiceCapabilities.vue'
 
-gsap.registerPlugin(ScrollTrigger)
-
 useReveal()
 
 const activeService = ref(0)
+const spotlightTrack = ref(null)
+
+// Scroll distance between one service and the next, in vh. The stage
+// is pinned meanwhile, so this only sets how long the track is.
+const SCROLL_PER_SERVICE = 50
 
 const services = [
   {
@@ -53,27 +54,9 @@ const services = [
   }
 ]
 
-let ctx
-
-onMounted(() => {
-  ctx = gsap.context(() => {
-    ScrollTrigger.create({
-      trigger: '.spotlight-track',
-      start: 'top top',
-      end: 'bottom bottom',
-      pin: '.spotlight-stage',
-      scrub: .4,
-      onUpdate(self) {
-        const idx = Math.min(services.length - 1, Math.floor(self.progress * services.length))
-        activeService.value = idx
-      }
-    })
-
-    fixScrollTriggerPositions()
-  }, '.servicios-page')
-})
-
-onBeforeUnmount(() => ctx?.revert())
+// The stage is pinned with CSS (position: sticky); each scroll gesture
+// moves exactly one service (see composables/steppedScroll.js).
+const { goTo: goToService } = useSteppedScroll(spotlightTrack, services.length, activeService)
 </script>
 
 <template>
@@ -99,7 +82,7 @@ onBeforeUnmount(() => ctx?.revert())
          SPOTLIGHT SEQUENCE
     ========================== -->
 
-    <section class="spotlight-track" :style="{ height: services.length * 100 + 'vh' }">
+    <section ref="spotlightTrack" class="spotlight-track" :style="{ height: 100 + (services.length - 1) * SCROLL_PER_SERVICE + 'vh' }">
       <div class="spotlight-stage">
 
         <div class="spotlight-head">
@@ -132,11 +115,15 @@ onBeforeUnmount(() => ctx?.revert())
         </router-link>
 
         <div class="spotlight-dots">
-          <span
+          <button
             v-for="(service, i) in services"
             :key="'dot' + service.number"
+            type="button"
             :class="{ '-active': activeService === i }"
-          ></span>
+            :aria-label="service.title"
+            :aria-current="activeService === i ? 'step' : undefined"
+            @click="goToService(i)"
+          ></button>
         </div>
 
       </div>

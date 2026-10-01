@@ -1,4 +1,5 @@
-import { onMounted, onBeforeUnmount, nextTick } from 'vue'
+import { onMounted, onBeforeUnmount } from 'vue'
+import { onPageShown } from './appReady'
 
 /* =========================
    SCROLL REVEALS — INTERSECTION OBSERVER
@@ -12,34 +13,42 @@ import { onMounted, onBeforeUnmount, nextTick } from 'vue'
    element's real, current position in the viewport, so there is
    nothing to go stale. Once revealed, an element is unobserved —
    these are one-time entrances, same as the old "once: true".
+
+   Observing only starts once the page is actually on screen (after
+   the preloader / route curtain), so the reveals above the fold are
+   seen from their first frame instead of playing behind the curtain.
 ========================= */
 
 export function useReveal(rootSelector = null) {
   let observer
+  let cancelWait
 
-  onMounted(async () => {
-    await nextTick()
+  onMounted(() => {
+    cancelWait = onPageShown(() => {
+      const root = rootSelector ? document.querySelector(rootSelector) : document
+      if (!root) return
 
-    const root = rootSelector ? document.querySelector(rootSelector) : document
-    if (!root) return
+      const targets = root.querySelectorAll('.reveal-up, .reveal-mask')
+      if (!targets.length) return
 
-    const targets = root.querySelectorAll('.reveal-up, .reveal-mask')
-    if (!targets.length) return
+      observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              entry.target.classList.add('is-visible')
+              observer.unobserve(entry.target)
+            }
+          })
+        },
+        { threshold: 0, rootMargin: '0px 0px -12% 0px' }
+      )
 
-    observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            entry.target.classList.add('is-visible')
-            observer.unobserve(entry.target)
-          }
-        })
-      },
-      { threshold: 0, rootMargin: '0px 0px -12% 0px' }
-    )
-
-    targets.forEach((el) => observer.observe(el))
+      targets.forEach((el) => observer.observe(el))
+    })
   })
 
-  onBeforeUnmount(() => observer?.disconnect())
+  onBeforeUnmount(() => {
+    cancelWait?.()
+    observer?.disconnect()
+  })
 }

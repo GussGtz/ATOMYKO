@@ -4,8 +4,9 @@ import { useRoute, useRouter } from 'vue-router'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import Lenis from 'lenis'
-import { appReady } from './composables/appReady'
+import { appReady, pageShown } from './composables/appReady'
 import { fixScrollTriggerPositions } from './composables/scrollFix'
+import { smoothScroll } from './composables/smoothScroll'
 import brandIcon from './assets/atomyko-icon-color.png'
 import brandIconOnDark from './assets/atomyko-icon-color-onDark.png'
 
@@ -53,34 +54,67 @@ function handleScroll() {
    PAGE TRANSITION
 ========================= */
 
+// The curtain fully covers the screen before the old page is swapped
+// out, and only lifts once the new one has mounted and settled. All
+// the heavy work of a route change (unmount, mount, scroll reset,
+// ScrollTrigger measuring) happens while nothing is visible, instead
+// of landing in the middle of the animation.
+
+let transitionId = 0
+
+// Runs cb after n GSAP ticks. Unlike requestAnimationFrame this keeps
+// going in a background tab, so a transition can't get stuck half-way.
+function afterTicks(n, cb) {
+  const tick = () => {
+    if (--n > 0) return
+    gsap.ticker.remove(tick)
+    cb()
+  }
+  gsap.ticker.add(tick)
+}
+
 function onPageLeave(el, done) {
-  gsap.to('.page-curtain', { scaleY: 1, duration: .45, ease: 'power3.inOut' })
-  gsap.to(el, {
-    opacity: 0,
-    y: -16,
-    duration: .35,
-    ease: 'power2.in',
-    onComplete: done
-  })
+  transitionId++
+  pageShown.value = false
+  lenis?.stop()
+
+  gsap.killTweensOf([el, '.page-curtain'])
+  gsap.set('.page-curtain', { transformOrigin: 'bottom' })
+  gsap.to(el, { opacity: 0, y: -16, duration: .35, ease: 'power2.in' })
+  gsap.to('.page-curtain', { scaleY: 1, duration: .5, ease: 'power3.inOut', onComplete: done })
 }
 
 function onPageEnter(el, done) {
-  if (lenis) lenis.scrollTo(0, { immediate: true })
-  else window.scrollTo(0, 0)
+  const id = ++transitionId
 
-  gsap.set(el, { opacity: 0, y: 16 })
-  gsap.to('.page-curtain', { scaleY: 0, duration: .5, ease: 'power3.inOut', delay: .08 })
-  gsap.to(el, {
-    opacity: 1,
-    y: 0,
-    duration: .55,
-    ease: 'power3.out',
-    delay: .18,
-    clearProps: 'transform',
-    onComplete: done
+  gsap.set(el, { opacity: 0 })
+  if (lenis) lenis.scrollTo(0, { immediate: true, force: true })
+  window.scrollTo(0, 0)
+
+  // Give the freshly mounted page two frames to lay out and paint
+  // under the curtain before anything starts moving.
+  afterTicks(2, () => {
+    if (id !== transitionId) return
+
+    ScrollTrigger.refresh()
+    lenis?.start()
+
+    // The curtain leaves upwards, so the top of the page is uncovered
+    // last — entrance animations wait until it's mostly out of the way.
+    gsap.delayedCall(.3, () => {
+      if (id === transitionId) pageShown.value = true
+    })
+
+    gsap.killTweensOf('.page-curtain')
+    gsap.set('.page-curtain', { transformOrigin: 'top' })
+    gsap.to('.page-curtain', { scaleY: 0, duration: .55, ease: 'power3.inOut' })
+    gsap.fromTo(
+      el,
+      { opacity: 0, y: 16 },
+      { opacity: 1, y: 0, duration: .55, ease: 'power3.out', delay: .12, clearProps: 'transform,opacity', onComplete: done }
+    )
   })
 
-  nextTick(() => ScrollTrigger.refresh())
   fixScrollTriggerPositions()
 }
 
@@ -102,11 +136,17 @@ watch(
 onMounted(async () => {
   window.addEventListener('scroll', handleScroll, { passive: true })
 
+  // Scroll is reset by the page transition, under the curtain. Left
+  // on "auto", back/forward would jump the outgoing page first.
+  history.scrollRestoration = 'manual'
+
   /* ---- LENIS SMOOTH SCROLL ---- */
   lenis = new Lenis({
     duration: 1.15,
-    easing: (t) => 1 - Math.pow(1 - t, 3)
+    easing: (t) => 1 - Math.pow(1 - t, 3),
+    virtualScroll: (data) => (smoothScroll.intercept ? smoothScroll.intercept(data) : true)
   })
+  smoothScroll.lenis = lenis
   lenis.on('scroll', ScrollTrigger.update)
   gsap.ticker.add((time) => lenis.raf(time * 1000))
   gsap.ticker.lagSmoothing(0)
@@ -160,6 +200,7 @@ onBeforeUnmount(() => {
   window.removeEventListener('scroll', handleScroll)
   ScrollTrigger.getAll().forEach((t) => t.kill())
   lenis?.destroy()
+  smoothScroll.lenis = null
 })
 </script>
 

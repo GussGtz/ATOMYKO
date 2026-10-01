@@ -10,8 +10,8 @@ import workExperiencePhoto from '../assets/work/brand-experience.jpg'
 // (we don't have those to show yet), so this teases our craft
 // without passing off a mockup as an actual delivery.
 const workCards = [
-  { type: 'photo', photo: workSoftwarePhoto, accent: 'var(--c-blue)', text: 'Plataformas web a medida, construidas para crecer con el negocio.' },
-  { type: 'photo', photo: workMobilePhoto, accent: 'var(--c-violet)', text: 'Apps móviles pensadas de punta a punta, del primer boceto al lanzamiento.' },
+  { type: 'photo', photo: workSoftwarePhoto, accent: 'var(--c-blue)', text: 'Plataformas a medida, construidas para crecer con el negocio.' },
+  { type: 'photo', photo: workMobilePhoto, accent: 'var(--c-violet)', text: 'Apps móviles pensadas de punta a punta.' },
   { type: 'photo', photo: workBrandPhoto, accent: 'var(--c-amber)', text: 'Presencia digital renovada para marcas que ya operan en el mercado.' },
   { type: 'photo', photo: workProductPhoto, accent: 'var(--c-green)', text: 'Herramientas de producto con una interfaz simple y directa.' },
   { type: 'photo', photo: workMarketingPhoto, accent: 'var(--c-pink)', text: 'Sistemas de marketing y contenido pensados para convertir.' },

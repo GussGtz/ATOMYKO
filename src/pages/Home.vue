@@ -2,7 +2,7 @@
 import { ref, computed, onMounted, onBeforeUnmount } from 'vue'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
-import { onAppReady } from '../composables/appReady'
+import { onPageShown } from '../composables/appReady'
 import { fixScrollTriggerPositions } from '../composables/scrollFix'
 import { useReveal } from '../composables/reveal'
 import heroVideo from '../assets/hero-video.mp4'
@@ -48,7 +48,49 @@ const serviceTeasers = [
 // open since the section loads showing its first item.
 const teaserOpen = ref(serviceTeasers.map((_, i) => (i === 0 ? 1 : 0)))
 
-const stack = ['VUE.JS', 'JAVASCRIPT', 'NODE.JS', 'POSTGRESQL', 'API', 'CLOUD', 'SEO', 'ADS', 'ANALYTICS']
+const marqueeItems = [
+  'SOFTWARE A LA MEDIDA',
+  'APPS MÓVILES (iOS & ANDROID)',
+  'MARKETING DIGITAL',
+  'SOFTWARE PARA BARBERÍAS',
+  'DESARROLLO WEB',
+  'SISTEMAS PARA RESTAURANTES',
+  'E-COMMERCE',
+  'SISTEMAS CMS',
+  'SOFTWARE CONTABLE',
+  'AUTOMATIZACIÓN',
+  'PUNTOS DE VENTA (POS)',
+  'ESTRATEGIA DIGITAL',
+  'APLICACIONES WEB',
+  'DISEÑO UI/UX',
+  'POSICIONAMIENTO SEO',
+  'GROWTH',
+  'INNOVACIÓN'
+]
+
+const stack = ['PROGRAMACIÓN A MEDIDA', 'FRONTEND', 'BACKEND', 'BASES DE DATOS', 'APPS MÓVILES', 'API', 'CLOUD', 'SEO', 'ADS', 'ANALYTICS']
+
+// Same idea as the stack, in words any client understands.
+const stackPlain = [
+  'PÁGINAS WEB',
+  'APPS PARA TU CELULAR',
+  'TIENDAS EN LÍNEA',
+  'PAGOS EN LÍNEA',
+  'CITAS Y RESERVAS',
+  'PUNTO DE VENTA',
+  'CONTROL DE INVENTARIO',
+  'REPORTES CLAROS',
+  'APARECER EN GOOGLE',
+  'ANUNCIOS QUE VENDEN',
+  'REDES SOCIALES',
+  'TODO EN LA NUBE',
+  'TAREAS AUTOMÁTICAS',
+  'DISEÑO FÁCIL DE USAR'
+]
+
+// Each track is two identical halves (the loop slides exactly one half),
+// and each half repeats the list enough to outgrow very wide screens.
+const loopItems = (items, copies) => Array.from({ length: copies * 2 }, () => items).flat()
 
 // Real clients only.
 const logoCloud = [
@@ -60,49 +102,7 @@ const logoCloud = [
   { name: 'Glass Caribe', image: glassCaribeLogo, alt: 'Glass Caribe' }
 ]
 
-// No invented quotes — these placeholders sit here honestly until
-// each client actually gives Atomyko a testimonial to publish.
-const PENDING_TESTIMONIAL = 'Testimonio pendiente — lo agregamos en cuanto nos lo compartan.'
-const testimonials = [
-  // hidden: true — temporarily off at the client's request, not deleted.
-  {
-    name: 'Corre Cancún',
-    logo: correCancunLogo,
-    text: 'Desde el primer momento, Atomyko entendió lo que queríamos transmitir como equipo y logró llevarlo a un sitio web moderno, atractivo y diferente, que realmente nos distingue de otros equipos formativos en Cancún.',
-    rotate: -7,
-    x: -60,
-    y: 50,
-    hidden: true
-  },
-  {
-    name: 'GCS & Asociados',
-    logo: gcsLogo,
-    text: 'Quedé muy satisfecho con el trabajo de Atomyko. Desde el principio entendieron lo que buscaba y fueron adaptando el diseño hasta llegar al resultado que quería. El sitio quedó moderno, profesional y mucho mejor de lo que tenía pensado.',
-    rotate: 6,
-    x: 55,
-    y: -55
-  },
-  { name: 'Cancún World Class', logo: cwcLogo, text: PENDING_TESTIMONIAL, rotate: -5, x: 65, y: 45 },
-  {
-    name: 'JugarLaPelota',
-    logo: jugarLaPelotaLogo,
-    text: 'Estamos muy agradecidos con Atomyko por el trabajo que realizaron. Lograron entender nuestra visión y convertirla en una plataforma que va más allá de lo que existe en el mercado. El resultado superó nuestras expectativas.',
-    rotate: 9,
-    x: -70,
-    y: -35
-  },
-  {
-    name: 'Glass Caribe',
-    logo: glassCaribeLogo,
-    text: 'Llevamos tiempo trabajando con Atomyko y hemos desarrollado dos proyectos juntos, digitalizando prácticamente toda nuestra operación con una plataforma web y una app móvil. Su trabajo nos ha ayudado a ser mucho más eficientes.',
-    rotate: -10,
-    x: 45,
-    y: 60
-  }
-]
-
 const visibleLogoCloud = computed(() => logoCloud.filter((l) => !l.hidden))
-const visibleTestimonials = computed(() => testimonials.filter((t) => !t.hidden))
 
 const whyIconPaths = {
   star: 'M32 8 L38.2 24.8 L56 26 L42.4 37.2 L46.8 54.4 L32 44.6 L17.2 54.4 L21.6 37.2 L8 26 L25.8 24.8 Z',
@@ -123,17 +123,13 @@ const whyCards = [
   { icon: 'bars', accent: 'var(--c-green)', text: 'Medimos el éxito en resultados reales para tu negocio, no solo en entregables bonitos.' }
 ]
 
-// 0 = scattered/overlapping like a dropped hand of cards, 1 = settled
-// into the grid — driven continuously by scroll position as the
-// section enters view, never a one-shot trigger.
-const testimonialScatter = ref(1)
-
 let ctx
 let onVisible = null
+let cancelHeroWait = null
+let heroFallback = null
 
 onMounted(() => {
   ctx = gsap.context(() => {
-    onAppReady(runHeroIntro)
 
     // Some browsers pause background-tab video playback even with
     // autoplay/loop set. Nudge it back into motion once the tab
@@ -158,29 +154,31 @@ onMounted(() => {
       }
     })
 
-    ScrollTrigger.create({
-      trigger: '.testimonials-grid',
-      start: 'top 95%',
-      end: 'top 35%',
-      scrub: true,
-      onUpdate(self) {
-        testimonialScatter.value = 1 - self.progress
-      }
-    })
-
     // Web fonts and the hero video can reflow the page after this
     // component measured its ScrollTrigger positions, which would
     // otherwise leave every trigger below the hero slightly (or
     // completely) misaligned. Re-measure once everything settles.
     fixScrollTriggerPositions()
 
-    gsap.to('.marquee-track', { xPercent: -50, duration: 26, ease: 'none', repeat: -1 })
-    gsap.to('.stack-track.-forward', { xPercent: -50, duration: 30, ease: 'none', repeat: -1 })
-    gsap.to('.stack-track.-reverse', { xPercent: 50, x: '-50%', duration: 34, ease: 'none', repeat: -1 })
+    // Duration follows the track's width so the speed stays the same
+    // no matter how many items the marquee has.
+    const marqueeTrack = document.querySelector('.marquee-track')
+    gsap.to(marqueeTrack, { xPercent: -50, duration: marqueeTrack.scrollWidth / 2 / 40, ease: 'none', repeat: -1 })
+
+    const stackForward = document.querySelector('.stack-track.-forward')
+    const stackReverse = document.querySelector('.stack-track.-reverse')
+    gsap.to(stackForward, { xPercent: -50, duration: stackForward.scrollWidth / 2 / 40, ease: 'none', repeat: -1 })
+    gsap.fromTo(stackReverse, { xPercent: -50 }, { xPercent: 0, duration: stackReverse.scrollWidth / 2 / 40, ease: 'none', repeat: -1 })
   })
+
+  // Wait until the page is really on screen (preloader gone, route
+  // curtain lifted) so the intro isn't spent behind either of them.
+  cancelHeroWait = onPageShown(() => ctx.add(runHeroIntro))
 })
 
 onBeforeUnmount(() => {
+  cancelHeroWait?.()
+  clearTimeout(heroFallback)
   ctx?.revert()
   if (onVisible) document.removeEventListener('visibilitychange', onVisible)
 })
@@ -200,7 +198,7 @@ function runHeroIntro() {
     .from('.hero-actions', { y: 16, opacity: 0, duration: .55 }, '-=.45')
     .from('.hero-visual', { y: 40, opacity: 0, duration: 1 }, '-=.4')
 
-  setTimeout(revealHero, 3800)
+  heroFallback = setTimeout(revealHero, 3800)
 }
 </script>
 
@@ -216,13 +214,12 @@ function runHeroIntro() {
       <div class="eyebrow hero-eyebrow">SOFTWARE + MARKETING DIGITAL / 2026</div>
 
       <h1 class="hero-title">
-        <span class="mask-line"><span class="mask-line-inner">Ideas que se convierten</span></span>
-        <span class="mask-line"><span class="mask-line-inner">en impacto.</span></span>
+        <span class="mask-line"><span class="mask-line-inner">Evolucionamos tu negocio</span></span>
+        <span class="mask-line"><span class="mask-line-inner">con tecnología y estrategia.</span></span>
       </h1>
 
       <p class="hero-desc">
-        Construimos software, marcas y estrategias digitales para empresas que quieren
-        dejar de seguir tendencias y empezar a marcar el ritmo.
+        Software y marketing a la medida para automatizar y hacer crecer tu empresa.
       </p>
 
       <div class="hero-actions">
@@ -257,16 +254,9 @@ function runHeroIntro() {
 
     <section class="marquee-section" aria-hidden="true">
       <div class="marquee-track">
-        <span>SOFTWARE</span><b>✦</b>
-        <span>MARKETING</span><b>✦</b>
-        <span>DISEÑO</span><b>✦</b>
-        <span>GROWTH</span><b>✦</b>
-        <span>INNOVACIÓN</span><b>✦</b>
-        <span>SOFTWARE</span><b>✦</b>
-        <span>MARKETING</span><b>✦</b>
-        <span>DISEÑO</span><b>✦</b>
-        <span>GROWTH</span><b>✦</b>
-        <span>INNOVACIÓN</span><b>✦</b>
+        <template v-for="(item, i) in [...marqueeItems, ...marqueeItems]" :key="i">
+          <span>{{ item }}</span><b>✦</b>
+        </template>
       </div>
     </section>
 
@@ -364,39 +354,6 @@ function runHeroIntro() {
     </section>
 
     <!-- =========================
-         TESTIMONIOS — SE ACOMODAN CON EL SCROLL
-    ========================== -->
-
-    <section class="section testimonials-section" style="background: var(--paper);">
-      <div class="section-head">
-        <div>
-          <div class="eyebrow reveal-up">CLIENTES</div>
-          <h2 class="reveal-mask">
-            <span class="mask-line"><span class="mask-line-inner">Confiable por</span></span>
-            <span class="mask-line"><span class="mask-line-inner">nuestra clientela.</span></span>
-          </h2>
-        </div>
-      </div>
-
-      <div
-        class="testimonials-grid"
-        :style="{ '--scatter': testimonialScatter }"
-      >
-        <article
-          v-for="t in visibleTestimonials"
-          :key="t.name"
-          class="testimonial-card"
-          :style="{ '--sr': t.rotate + 'deg', '--sx': t.x + 'px', '--sy': t.y + 'px' }"
-        >
-          <span class="testimonial-quote">&ldquo;</span>
-          <p>{{ t.text }}</p>
-          <div class="testimonial-divider"></div>
-          <img :src="t.logo" :alt="t.name" class="testimonial-logo" />
-        </article>
-      </div>
-    </section>
-
-    <!-- =========================
          POR QUÉ ATOMYKO
     ========================== -->
 
@@ -404,8 +361,8 @@ function runHeroIntro() {
       <div class="why-head">
         <div class="eyebrow reveal-up">POR QUÉ ATOMYKO</div>
         <p class="reveal-up">
-          No somos una agencia más entre muchas. Trabajamos con pocos clientes a la vez
-          para poder dedicarle a cada proyecto la atención que merece, desde la estrategia
+          No somos una agencia más entre muchas. Nos involucramos en cada proyecto como
+          si fuera nuestro y le damos la atención que merece, desde la estrategia
           hasta el código que lo sostiene.
         </p>
       </div>
@@ -438,10 +395,10 @@ function runHeroIntro() {
 
       <div class="stack-marquee">
         <div class="stack-track -forward">
-          <span v-for="item in [...stack, ...stack]" :key="'a' + item + Math.random()" class="stack-pill">{{ item }}</span>
+          <span v-for="(item, i) in loopItems(stack, 4)" :key="i" class="stack-pill">{{ item }}</span>
         </div>
         <div class="stack-track -reverse">
-          <span v-for="item in [...stack, ...stack].reverse()" :key="'b' + item + Math.random()" class="stack-pill">{{ item }}</span>
+          <span v-for="(item, i) in loopItems(stackPlain, 2)" :key="i" class="stack-pill">{{ item }}</span>
         </div>
       </div>
     </section>
@@ -459,6 +416,12 @@ function runHeroIntro() {
           <span class="mask-line"><span class="mask-line-inner idea-cta-underline">Cuéntanosla</span></span>
         </h2>
       </router-link>
+
+      <div class="reveal-up">
+        <router-link to="/contacto" class="contact-button">
+          Hablemos <b>↗</b>
+        </router-link>
+      </div>
     </section>
 
   </main>

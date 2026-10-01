@@ -23,3 +23,28 @@ export function onAppReady(cb) {
     }
   })
 }
+
+/* =========================
+   "PAGE SHOWN" FLAG
+   False while the route-transition curtain covers the screen.
+   A page mounts underneath the curtain, so entrance animations
+   started at mount time would play (partly or entirely) unseen.
+   onPageShown waits for both the preloader and the curtain, and
+   returns a function that cancels the wait (call it on unmount).
+========================= */
+
+export const pageShown = ref(true)
+
+export function onPageShown(cb) {
+  if (appReady.value && pageShown.value) {
+    cb()
+    return () => {}
+  }
+  const stop = watch([appReady, pageShown], ([ready, shown]) => {
+    if (ready && shown) {
+      stop()
+      cb()
+    }
+  })
+  return stop
+}

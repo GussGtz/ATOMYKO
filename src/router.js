@@ -15,10 +15,9 @@ const routes = [
 
 const router = createRouter({
   history: createWebHistory(),
-  routes,
-  scrollBehavior() {
-    return { top: 0 }
-  }
+  // No scrollBehavior on purpose: it would jump the outgoing page to the
+  // top while it's still visible. App.vue resets scroll under the curtain.
+  routes
 })
 
 export default router
